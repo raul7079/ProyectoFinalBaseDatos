@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <%@page import="mipk.beanDB"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,11 +17,18 @@
 	h1{
 		text-align: center;		
 	}
-	select{
-		dispay: inline;
-		margin-top: 1%;
+	form{
+		margin-left: 5%;
 	}
 </style>
+<script type="text/javascript">
+function datos(){
+    var nombre = document.getElementById("nombre").value;
+    var apellido = document.getElementById("apellido").value;
+    var id = document.getElementById("id").value;
+	return "INSERT INTO medicos (idMedico, nombre, apellidos) VALUES ('" + id + "', " + "'" + nombre + "', " + "'" + apellido + "')"
+}
+</script>
 </head>
 <body>
 <h1><%=session.getAttribute("usuario") %>: Aqui puede insertar Datos</h1>
@@ -30,9 +38,49 @@
 <a class="btn btn-primary" type="button" href="verdatos.jsp">Ver datos</a>
 <a class="btn btn-danger" type="button" href="cerrarsesion.jsp">Salir</a>
 </div>
+<form action="insertdatos.jsp">
+  Id:<br>
+  <input type="text" name="id">
+  <br>
+  Nombre:<br>
+  <input type="text" name="nombre">
+  <br>
+  Apellidos:<br>
+  <input type="text" name="apellido">
+  <br><br>
+  <button type="submit" onclick="datos()">Enviar</button>
+</form>
+<br>
+<%
 
+String query="select idMedico, nombre, apellidos from medicos";
+String insert = "";
+beanDB basededatos = new beanDB();
+basededatos.insert(insert);
+String [][] tablares = basededatos.resConsultaSelectA3(query);
 
-
+%>
+<table id="primera" style="display: none" class="table">
+<%
+	%>
+	  <thead class="thead-dark">
+		<tr>
+	 		<th scope="col">idMedico</th>
+			<th scope="col">Nombre</th>
+	 		<th scope="col">Apellidos</th>
+		</tr>
+	</thead>
+	<%
+	for(int i = 0; i < tablares.length; i++) {
+		%>
+		<tr>
+	 		<td> <%= tablares[i][0] %> </td>
+	 		<td> <%= tablares[i][1] %> </td>
+	 		<td> <%= tablares[i][2] %> </td>
+	 	</tr> <% 	 
+	}
+%>
+</table>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

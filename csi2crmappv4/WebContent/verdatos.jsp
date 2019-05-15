@@ -108,6 +108,7 @@ String [][] tablares = basededatos.resConsultaSelectA3(query);
 	 	</tr> <% 	 
 	}
 %>
+</table>
 
 <%
 
@@ -115,9 +116,6 @@ String query1="select numHabitacion, idPlanta from habitaciones where idPlanta =
 String [][] tablares1 = basededatos.resConsultaSelectA3(query1);
 
 %>
-
-</table>
-
 <table id="segunda" style="display: none" class="table">
 <%
 	%>
