@@ -13,21 +13,21 @@
 	}
 	div{
 		margin-left: 5%;
+		margin-top: 1%;
 	}
 	h1{
 		text-align: center;		
 	}
 	form{
 		margin-left: 5%;
+		margin-top: 2%;
 	}
+
 </style>
 <script type="text/javascript">
-function datos(){
-    var nombre = document.getElementById("nombre").value;
-    var apellido = document.getElementById("apellido").value;
-    var id = document.getElementById("id").value;
-	return "INSERT INTO medicos (idMedico, nombre, apellidos) VALUES ('" + id + "', " + "'" + nombre + "', " + "'" + apellido + "')"
-}
+function ocultar(){
+	document.getElementById('primera').style.display = 'table';
+	}
 </script>
 </head>
 <body>
@@ -39,22 +39,24 @@ function datos(){
 <a class="btn btn-danger" type="button" href="cerrarsesion.jsp">Salir</a>
 </div>
 <form action="insertdatos.jsp">
-  Id:<br>
-  <input type="text" name="id">
-  <br>
-  Nombre:<br>
+  Id:
+  <input type="number" name="id">
+  
+  Nombre:
   <input type="text" name="nombre">
-  <br>
-  Apellidos:<br>
+  
+  Apellidos:
   <input type="text" name="apellido">
-  <br><br>
-  <button type="submit" onclick="datos()">Enviar</button>
+  <br>
+  <div>
+  	<a type="button" class="btn btn-success">Enviar</a>
+  	<a type="button" class="btn btn-success" onclick="ocultar()">Mostrar</a>
+  </div>
 </form>
 <br>
 <%
-
 String query="select idMedico, nombre, apellidos from medicos";
-String insert = "";
+String insert = "INSERT INTO medicos VALUES ("+request.getParameter("id")+","+request.getParameter("nombre")+","+request.getParameter("apellido")+")";
 beanDB basededatos = new beanDB();
 basededatos.insert(insert);
 String [][] tablares = basededatos.resConsultaSelectA3(query);
