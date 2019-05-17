@@ -29,38 +29,24 @@ try {
 		dispay: inline;
 		margin-top: 1%;
 	}
+	form{
+		margin-left: 5%;
+	}
 </style>
 <script type="text/javascript">
 function mostrar(id) {
-	
-    if (id == "primera") {
-        $("#primera").show();
-        $("#segunda").hide();
-        $("#tercera").hide();
-        $("#cuarta").hide();
+    if (id == "parrafo") {
+        $("#parrafo").show();
+        $("#uno").hide();
     }
 
-    if (id == "segunda") {
-        $("#primera").hide();
-        $("#segunda").show();
-        $("#tercera").hide();
-        $("#cuarta").hide();
-    }
+    if (id == "6" || id == "61" || id == "67" || id == "22") {
+        $("#parrafo").hide();
+        $("#uno").show();
 
-    if (id == "tercera") {
-        $("#primera").hide();
-        $("#segunda").hide();
-        $("#tercera").show();
-        $("#cuarta").hide();
-    }
-
-    if (id == "cuarta") {
-        $("#primera").hide();
-        $("#segunda").hide();
-        $("#tercera").hide();
-        $("#cuarta").show();
     }
 }
+
 </script>
 </head>
 <body>
@@ -71,31 +57,34 @@ function mostrar(id) {
 <a class="btn btn-primary" type="button" href="insertdatos.jsp">Insertar Datos</a>
 <a class="btn btn-danger" type="button" href="cerrarsesion.jsp">Salir</a>
 </div>
-<div>
-<select id="status" name="status" onChange="mostrar(this.value);">
-  <option>Seleccione una opcion</option>
-  <option value="primera">Listado de todos los medicos</option>
-  <option value="segunda">Listado de todas las habitaciones que estan en la primera planta</option>
-  <option value="tercera">Listado de todos los pacientes</option>
-  <option value="cuarta">Nombre y apellidos de los pacientes que visitaron al medico el dia 25 del mes de Mayo</option>
+<form action="verdatos.jsp" onChange="mostrar(this.value);">
+Seleccione una opcion: 
+<select name="nombre">
+  <option value="6">Mara Boyle</option>
+  <option value="61">Zira Stout</option>
+  <option value="67">Chester Daniels</option>
+  <option value="22">Darius Mccoy</option>
 </select>
-</div>
+<input type="submit">
+</form>
 <br/>
 <%
 
-String query="select idMedico, nombre, apellidos from medicos";
+String idPaciente = request.getParameter("nombre");
+String query="select idVisita, medicos.nombre, fechaVisita from visitaMedica join medicos on (visitaMedica.idMedico=medicos.idMedico) where idPaciente=" + idPaciente;
 beanDB basededatos = new beanDB();
 String [][] tablares = basededatos.resConsultaSelectA3(query);
 
 %>
-<table id="primera" style="display: none" class="table">
+<p id="parrafo">Eliga una opcion</p>
+<table id="uno" class="table">
 <%
 	%>
 	  <thead class="thead-dark">
 		<tr>
-	 		<th scope="col">idMedico</th>
-			<th scope="col">Nombre</th>
-	 		<th scope="col">Apellidos</th>
+	 		<th scope="col">idVisita</th>
+			<th scope="col">Nombre medico</th>
+	 		<th scope="col">fechaVisita</th>
 		</tr>
 	</thead>
 	<%
@@ -107,94 +96,7 @@ String [][] tablares = basededatos.resConsultaSelectA3(query);
 	 		<td> <%= tablares[i][2] %> </td>
 	 	</tr> <% 	 
 	}
-%>
-</table>
 
-<%
-
-String query1="select numHabitacion, idPlanta from habitaciones where idPlanta = 1";
-String [][] tablares1 = basededatos.resConsultaSelectA3(query1);
-
-%>
-<table id="segunda" style="display: none" class="table">
-<%
-	%>
-	  <thead class="thead-dark">
-		<tr>
-			<th scope="col">numHabitacion</th>
-	 		<th scope="col">idPlanta</th>
-		</tr>
-	</thead>
-	<%
-	for(int i = 0; i < tablares1.length; i++) {
-		%>
-		<tr>
-	 		<td> <%= tablares1[i][0] %> </td>
-	 		<td> <%= tablares1[i][1] %> </td>
-	 	</tr> <% 	 
-	}
-%>
-</table>
-
-<%
-
-String query2="select idPaciente, nombre, apellidos, fechaNacimiento from pacientes";
-String [][] tablares2 = basededatos.resConsultaSelectA3(query2);
-
-%>
-
-</table>
-
-<table id="tercera" style="display: none" class="table">
-<%
-	%>
-	  <thead class="thead-dark">
-		<tr>
-	 		<th scope="col">idPaciente</th>
-			<th scope="col">nombre</th>
-	 		<th scope="col">apellidos</th>
-	 		<th scope="col">fechaNacimiento</th>
-		</tr>
-	</thead>
-	<%
-	for(int i = 0; i < tablares2.length; i++) {
-		%>
-		<tr>
-	 		<td> <%= tablares2[i][0] %> </td>
-	 		<td> <%= tablares2[i][1] %> </td>
-	 		<td> <%= tablares2[i][2] %> </td>
-	 		<td> <%= tablares2[i][3] %> </td>
-	 	</tr> <% 	 
-	}
-%>
-</table>
-
-<%
-
-String query3="select nombre, apellidos from pacientes join visitaMedica on (pacientes.idPaciente=visitaMedica.idPaciente) where DAY(fechaVisita)=25";
-String [][] tablares3 = basededatos.resConsultaSelectA3(query3);
-
-%>
-
-</table>
-
-<table id="cuarta" style="display: none" class="table">
-<%
-	%>
-	  <thead class="thead-dark">
-		<tr>
-			<th scope="col">nombre</th>
-	 		<th scope="col">apellidos</th>
-		</tr>
-	</thead>
-	<%
-	for(int i = 0; i < tablares3.length; i++) {
-		%>
-		<tr>
-	 		<td> <%= tablares2[i][1] %> </td>
-	 		<td> <%= tablares2[i][2] %> </td>
-	 	</tr> <% 	 
-	}
 %>
 </table>
 
